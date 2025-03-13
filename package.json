@@ -1,0 +1,16 @@
+{
+  "name": "api.usersystem.node",
+  "main": "main.ts",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node main.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "typescript": "^5.8.2"
+  }
+}
