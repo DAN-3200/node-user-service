@@ -1,14 +1,8 @@
-// Contrato
-export interface IUseCase {
-   createUser(info)
-   readUser()
-   updateUser()
-   deleteUser()
-}
-
-export interface IDB {
-   save(info)
-   read()
-   update()
-   delete()
+import { User } from "./models.ts"
+// Contratos recorrentes
+export interface Idb {
+   save(info): boolean
+   read(): [User[], boolean]
+   update(info): boolean
+   delete(id): boolean
 }

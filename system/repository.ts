@@ -1,21 +1,22 @@
 // PRISMA ORM conectado ao SQLite
-import type { IDB } from "./interfaces.ts";
+import type { Idb } from "./interfaces.ts";
 
-export class FakeDB implements IDB {
+export class FakeDB implements Idb {
    private FakeDatabase: any[] = []
-   save(info: any) {
+   save(info: any): boolean {
       this.FakeDatabase.push(info)
+      return true
    }
 
-   read() {
-      return this.FakeDatabase
+   read(): [any[], boolean] {
+      return [this.FakeDatabase, true]
    }
 
-   update() {
-
+   update(): boolean {
+      return true
    }
-   
-   delete() {
 
+   delete(): boolean {
+      return true
    }
 }

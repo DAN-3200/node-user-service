@@ -17,7 +17,9 @@ function userRoutes(app: Express.Application) {
    let useCase = new UserUseCase(useFakeDB)
    let useController = new UserController(useCase)
 
-   app.post("/create", (req, res) => useController.createUser(req, res))
-   app.get("/read", (req, res) => useController.readUser(req, res))
+   app.post("/createUser", (req, res) => useController.createUser(req, res))
+   app.get("/readUser", (req, res) => useController.readUser(req, res))
+   app.put("/updateUser", (req, res) => useController.updateUser(req, res))
+   app.delete("/deleteUser", (req, res) => useController.deleteUser(req, res))
+
 }
-      

@@ -1,34 +1,37 @@
 import type { User } from './models.ts'
-import type { IUseCase, IDB } from './interfaces.ts'
+import type { Idb } from './interfaces.ts'
 
-export class UserUseCase implements IUseCase {
-   private DB
-   constructor(DB: IDB) {
+export class UserUseCase {
+   private DB: Idb
+   constructor(DB: Idb) {
       this.DB = DB
    }
 
-   createUser(info) {
+   createUser(info: Partial<User>): boolean {
       let modelUser: User = {
-         id: `Id-${Math.random()}`,
-         name: "Daniel",
-         email: "dan@gmail.com",
-         password: "pokemon32",
-         role: "user",
-         date: "29/09/2025"
+         id: info.id,
+         name: info.name,
+         email: info.email,
+         password: info.password,
+         role: info.role,
+         date: Date.now().toFixed()
       }
-
-      this.DB.save(modelUser)
+      let err = this.DB.save(modelUser)
+      return err
    }
 
-   readUser(): User[] {
-      let data = this.DB.read()
+   readUser(): [User[], boolean] {
+      let [data, err] = this.DB.read()
+      return [data, err]
+   }
 
-      return data
+   updateUser(info: Partial<User>): boolean {
+      let err = this.DB.update(info)
+      return err
    }
-   updateUser() {
-       
-   }
-   deleteUser() {
-       
+
+   deleteUser(id): boolean {
+      let err = this.DB.delete(id)
+      return err
    }
 }
