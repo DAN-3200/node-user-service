@@ -9,23 +9,45 @@ export class UserController {
 
    createUser(req, res) {
       let data = req.body
-
-      let isSave = this.useCase.createUser(data)
-      isSave ? res.status(200).send("Ok") : res.status(400).send("No save")
+      let err = this.useCase.createUser(data)
+      if (err != null) {
+         console.log("Error: ", err)
+         res.status(400).send(err)
+         return
+      }
+      res.status(200).send("Saved User")
    }
 
-   readUser(req, res) {
-      let data = this.useCase.readUser()
-      
+   readUser(_req, res) {
+      let [data, err] = this.useCase.readUser()
+      if (err != null) {
+         console.log("Error: ", err)
+         res.status(400).send(err)
+         return
+      }
       res.status(200).send(data)
    }
 
    updateUser(req, res) {
-
+      let data = req.body
+      let err = this.useCase.updateUser(data)
+      if (err != null) {
+         console.log("Error: ", err)
+         res.status(400).send(err)
+         return
+      }
+      res.status(200).send("Updated User")
    }
 
    deleteUser(req, res) {
-
+      let data: { id: string } = req.body
+      let err = this.useCase.deleteUser(data.id)
+      if (err != null) {
+         console.log("Error: ", err)
+         res.status(400).send(err)
+         return
+      }
+      res.status(200).send("Deleted User")
    }
-
+   
 }
