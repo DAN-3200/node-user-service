@@ -1,53 +1,27 @@
-import { UserUseCase } from "./useCase.ts"
+import { UserModel } from './models.ts';
+import { LayerService } from './service.ts';
+import type { Context } from '@oak/oak';
 
-// lida com tratamento das requests/responses
-export class UserController {
-   private useCase: UserUseCase
-   constructor(useCase: UserUseCase) {
-      this.useCase = useCase
-   }
+export class LayerController {
+	private service: LayerService;
+	constructor(service: LayerService) {
+		this.service = service;
+	}
 
-   createUser(req, res) {
-      let data = req.body
-      let err = this.useCase.createUser(data)
-      if (err != null) {
-         console.log("Error: ", err)
-         res.status(400).send(err)
-         return
-      }
-      res.status(200).send("Saved User")
-   }
+	createUser = async (ctx: Context) => {
+		const bodyReq = (await ctx.request.body.json()) as UserModel;
+		this.service.createUser(bodyReq);
+		ctx.response.status = 201;
+		ctx.response.body = 'user created';
+	};
 
-   readUser(_req, res) {
-      let [data, err] = this.useCase.readUser()
-      if (err != null) {
-         console.log("Error: ", err)
-         res.status(400).send(err)
-         return
-      }
-      res.status(200).send(data)
-   }
+	getUserList = async (ctx: Context) => {
+		let userList = this.service.getUserList();
+		ctx.response.status = 200;
+		ctx.response.body = userList;
+	};
 
-   updateUser(req, res) {
-      let data = req.body
-      let err = this.useCase.updateUser(data)
-      if (err != null) {
-         console.log("Error: ", err)
-         res.status(400).send(err)
-         return
-      }
-      res.status(200).send("Updated User")
-   }
+	editUser = async (ctx: Context) => {};
 
-   deleteUser(req, res) {
-      let data: { id: string } = req.body
-      let err = this.useCase.deleteUser(data.id)
-      if (err != null) {
-         console.log("Error: ", err)
-         res.status(400).send(err)
-         return
-      }
-      res.status(200).send("Deleted User")
-   }
-   
+	deleteUser = async (ctx: Context) => {};
 }

@@ -1,8 +1,8 @@
-export interface User {
-   id: string;
-   name: string;
-   email: string;
-   password: string; // hash password
-   role: string;
-   date: string;
+export interface UserModel {
+	id: string;
+	name: string;
+	email: string;
+	password: string; // hash password
+	role: string;
+	date: string;
 }

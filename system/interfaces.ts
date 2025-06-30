@@ -1,11 +1,8 @@
-import type { User } from "./models.ts"
+import type { UserModel } from './models.ts';
 
-// Contratos recorrentes
-export interface Idb {
-   save(info): Err
-   read(): [User[], Err]
-   update(info: User): Err
-   delete(info: { id: string }): Err
+export interface RepoDB {
+	createUser(info: UserModel): void;
+	getUserList(): UserModel[];
+	editUser(info: UserModel): void;
+	deleteUser(id: string): void;
 }
-
-export type Err = Error | string | null

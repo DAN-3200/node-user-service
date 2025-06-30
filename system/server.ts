@@ -1,26 +1,25 @@
-import Express from "express"
-import { UserController } from "./controller.ts"
-import { UserUseCase } from "./useCase.ts"
-import { FakeDB } from "./repository.ts"
+import { LayerController } from './controller.ts';
+import { LayerService } from './service.ts';
+import { FakeRepoDB } from './repository.ts';
+import { Application, Router } from '@oak/oak';
 
-export function runServer() {
-   const app = Express()
-   const port = 8080
+export async function runServer() {
+	const app = new Application();
+	const router = new Router();
+	setRoutes(router);
+	app.use(router.routes());
+	app.use(router.allowedMethods());
 
-   app.use(Express.json()) // Parse JSON Body
-   userRoutes(app)
-   app.listen(port, () => console.log(`\nServer runnig [http://localhost:${port}/]\n`))
+	await app.listen({ port: 8000 });
 }
 
-function userRoutes(app: Express.Application) {
-   let useFakeDB = new FakeDB()
-   let useCase = new UserUseCase(useFakeDB)
-   let useController = new UserController(useCase)
+function setRoutes(route: Router) {
+	let useRepo = new FakeRepoDB();
+	let useService = new LayerService(useRepo);
+	let useController = new LayerController(useService);
 
-   // Login()
-   // Register()
-   app.post("/createUser", (req, res) => useController.createUser(req, res))
-   app.get("/readUser", (req, res) => useController.readUser(req, res))
-   app.put("/updateUser", (req, res) => useController.updateUser(req, res))
-   app.delete("/deleteUser", (req, res) => useController.deleteUser(req, res))
+	route.post('/createUser', useController.createUser);
+	route.get('/getUserList', useController.getUserList);
+	route.put('/editUser', useController.editUser);
+	route.delete('/deleteUser', useController.deleteUser);
 }
